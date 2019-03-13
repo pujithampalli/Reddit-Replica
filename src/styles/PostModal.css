@@ -1,0 +1,19 @@
+.modal-author{
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.external-link{
+  font-size: 11px;
+  display: inline-block;
+    width: 180px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    margin-top: 10px;
+    color:rgb(64, 118, 159);
+}
+
+.modal-padding{
+  padding: 15px;
+}

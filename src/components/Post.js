@@ -15,7 +15,7 @@ export default class Post extends React.Component {
 
   render() {
     let modalClose = () => this.setState({ modalShow: false });
-    const { url, title, author, selftext, thumbnail, subreddit_name_prefixed } = this.props
+    const { url, title, author, selftext, description, thumbnail, subreddit_name_prefixed } = this.props
     const notImage = [ 'self', 'default' ]
     return (
       <div className="main-card" >
@@ -24,7 +24,7 @@ export default class Post extends React.Component {
               { !notImage.includes(thumbnail) && <Image floated='right' src={thumbnail} rounded bordered size="tiny" />}
               <div className="author">Posted by {author} in {subreddit_name_prefixed}</div>
               <div className="post-text" >{title}</div>
-              <div> {selftext} </div>
+              <div className="description"> {description} </div>
               <a href={url} className="external-link"><i className="fa fa-external-link"></i> {url}</a>
           </div>
           <PostModal
@@ -36,6 +36,7 @@ export default class Post extends React.Component {
             author={author}
             selftext={selftext}
             thumbnail = {thumbnail}
+            description = {description}
         />
       </div>
     );

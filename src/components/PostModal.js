@@ -8,7 +8,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 export default class PostModal extends React.Component {
   render() {
-    const { url, title, author, selftext, subreddit, thumbnail } = this.props
+    const { url, title, author, selftext, subreddit, thumbnail, description } = this.props
     const notImage = [ 'self', 'default' ]
     return (
       <Modal
@@ -26,6 +26,7 @@ export default class PostModal extends React.Component {
         <Modal.Body>
         { !notImage.includes(thumbnail) && <Image floated='right' src={thumbnail} rounded bordered size="tiny" />}
           <h4>{title}</h4>
+          <div className="description"> {description} </div>
           <a href={url} className="external-link"><i className="fa fa-external-link"></i> {url}</a>
         </Modal.Body>
         <Modal.Footer>

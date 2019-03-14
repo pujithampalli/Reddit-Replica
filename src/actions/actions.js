@@ -91,9 +91,9 @@ export const searchPosts = (term) => {
     if(term==undefined || ""){
       var term = "pol";
     }
-    
+
       return (dispatch) => {
-          
+
             return fetch(`https://www.reddit.com/subreddits/search.json?q=${term}`)
             .then(
                 response => response.json(),

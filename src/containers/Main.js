@@ -36,7 +36,8 @@ class Main extends Component {
         super(props)
         this.state = {
           menu: '/best',
-          term: ''
+          term: '',
+          selectedSort: ''
         }
 
 
@@ -111,23 +112,40 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, selectedSubreddit } = this.props
+        const { dispatch } = this.props
+        if((localStorage.getItem('subreddit')) && (localStorage.getItem('sort'))){
+          var selectedSubreddit = localStorage.getItem('subreddit');
+          console.log("localStorage.getItem('subreddit')" + localStorage.getItem('subreddit')+""+localStorage.getItem('sort'))
+          var sort = localStorage.getItem('sort');
+          if(sort=="" && localStorage.getItem('sort')){
+            sort = 'best'
+          }
+        }
+        else {
+          var { selectedSubreddit } = this.props
+        }
+
         dispatch(fetchPostsIfNeeded(selectedSubreddit))
-        console.log("This is state did mount: "+this.state.menu);
+
     }
 
     componentDidUpdate(){
       const { dispatch, selectedSubreddit } = this.props
-      console.log('selected subreddit: '+selectedSubreddit);
       window.onpopstate  = (e) => {
         window.location.reload();
 
       }
-      console.log("This is state update: "+this.state.menu);
+      localStorage.setItem('subreddit', selectedSubreddit);
+      localStorage.setItem('sort', this.state.selectedSort);
+    }
+
+    componentWillUnmount(){
+      const { dispatch, selectedSubreddit } = this.props
     }
 
     handleMenuChange(subreddit,sort) {
         const sub = subreddit.replace(/ /g, '')
+        this.setState({selectedSort: sort})
         this.props.dispatch(selectSubreddit(sub))
         this.props.dispatch(selectSort(sort))
         this.props.dispatch(fetchPostsIfNeeded(sub,sort))
@@ -145,7 +163,6 @@ class Main extends Component {
       console.log("This is search: "+term)
       this.props.dispatch(selectSubreddit('search'))
       this.recvPosts = dispatch(searchPosts(term))
-      console.log("Results: "+JSON.stringify(this.recvPosts));
   }
 
     render() {
@@ -222,7 +239,6 @@ class Main extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("from mapstateprops"+ JSON.stringify(state));
     const { selectedSubreddit, postsBySubreddit } = state;
     if(selectedSubreddit == "search"){
       var { isFetching, items: posts } = postsBySubreddit['undefined'] || { isFetching: true, items: [] }

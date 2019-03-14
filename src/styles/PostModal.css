@@ -17,3 +17,10 @@
 .modal-padding{
   padding: 15px;
 }
+
+.description{
+  max-height: 180px;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  margin-top: 10px;
+}

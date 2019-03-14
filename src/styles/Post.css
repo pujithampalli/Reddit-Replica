@@ -41,6 +41,13 @@ a{
     color:rgb(64, 118, 159);
 }
 
+.description{
+  max-height: 180px;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  margin-top: 10px;
+}
+
 .open-modal{
   float: right;
 }

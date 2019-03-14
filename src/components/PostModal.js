@@ -26,7 +26,7 @@ export default class PostModal extends React.Component {
         <Modal.Body>
         { !notImage.includes(thumbnail) && <Image floated='right' src={thumbnail} rounded bordered size="tiny" />}
           <h4>{title}</h4>
-          <div className="external-link"><i className="fa fa-external-link"></i> {url}</div>
+          <a href={url} className="external-link"><i className="fa fa-external-link"></i> {url}</a>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.onHide}>Close</Button>

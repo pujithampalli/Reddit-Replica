@@ -3,7 +3,8 @@ import {
     SELECT_SORT,
     INVALIDATE_SUBREDDIT,
     REQUEST_POSTS,
-    RECEIVE_POSTS
+    RECEIVE_POSTS,
+    SEARCH_POSTS
 } from '../constants'
 
 // Import fetch API in case of browser compatiblity issues
@@ -51,6 +52,15 @@ const recievePosts = (subreddit, sort, json) => (
     }
 )
 
+const recieveSearchPosts = (term, json) => (
+    {
+        type: SEARCH_POSTS,
+        term,
+        posts: json.data.children.map(child => child.data),
+        recievedAt: Date.now()
+    }
+)
+
 // Helper function to fetch JSON data from Reddit API
 const fetchPosts = (subreddit,sort) => {
   if(sort==undefined){
@@ -76,6 +86,24 @@ const fetchPosts = (subreddit,sort) => {
           )
         }
 }
+
+export const searchPosts = (term) => {
+    if(term==undefined || ""){
+      var term = "pol";
+    }
+    
+      return (dispatch) => {
+          
+            return fetch(`https://www.reddit.com/subreddits/search.json?q=${term}`)
+            .then(
+                response => response.json(),
+                error => console.log('An error occured', error)
+            )
+            .then(
+                json => dispatch(recieveSearchPosts(term, json))
+            )
+          }
+  }
 
 const shouldFetchPosts = (state, subreddit, sort) => {
   if(sort == undefined){

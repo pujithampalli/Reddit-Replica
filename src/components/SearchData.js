@@ -21,7 +21,7 @@ import App from '../containers/App.js';
 import Posts from '../containers/Posts.js';
 import { Route, Redirect } from 'react-router-dom';
 
-export default class Data extends React.Component {
+export default class SearchData extends React.Component {
   constructor(props) {
     super(props);
 
@@ -33,10 +33,22 @@ export default class Data extends React.Component {
     const { posts } = this.props
     return (
       <div>
-          {posts.length > 0 &&
               <Posts posts={posts} />
-          }
+          
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  console.log("from mapstateprops searchdata"+ JSON.stringify(state));
+    const { selectedSubreddit, postsBySubreddit } = state
+    const { isFetching, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: [] }
+
+    return {
+        selectedSubreddit,
+        posts,
+    }
+}
+
+export default connect(mapStateToProps)(SearchData)

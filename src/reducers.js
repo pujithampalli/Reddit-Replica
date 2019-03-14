@@ -3,7 +3,8 @@ import {
     SELECT_SORT,
     INVALIDATE_SUBREDDIT,
     REQUEST_POSTS,
-    RECEIVE_POSTS
+    RECEIVE_POSTS,
+    SEARCH_POSTS
 } from './constants'
 
 import { combineReducers } from 'redux'
@@ -53,6 +54,13 @@ const posts = (
                 items: action.posts,
                 lastUpdated: action.receivedAt
             }
+        case SEARCH_POSTS:
+            return { ...state,
+                isFetching: false,
+                didInvalidate: false,
+                items: action.posts,
+                lastUpdated: action.receivedAt
+            }
         default:
             return state
 
@@ -67,6 +75,7 @@ const postsBySubreddit = (
     switch(action.type) {
         case INVALIDATE_SUBREDDIT:
         case RECEIVE_POSTS:
+        case SEARCH_POSTS:
         case REQUEST_POSTS:
             return { ...state,
                 [action.subreddit]: posts(state[action.subreddit], action)

@@ -23,7 +23,8 @@ import {
     selectSubreddit,
     selectSort,
     fetchPostsIfNeeded,
-    invalidateSubreddit
+    invalidateSubreddit,
+    searchPosts
 } from '../actions/actions'
 import Data from '../components/Data'
 import Header from '../components/Header'
@@ -35,19 +36,23 @@ class Main extends Component {
         super(props)
         this.state = {
           menu: '/best',
+          term: ''
         }
+        
 
         this.handleMenuChange = this.handleMenuChange.bind(this)
         this.handleRefreshClick = this.handleRefreshClick.bind(this)
         this.handleSelect = this.handleSelect.bind(this)
         this.handleSort = this.handleSort.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this);
 
         if (window.performance) {
         if (performance.navigation.type == 1) {
           console.log("This is state: "+this.state.menu);
-          this.handleRefreshClick();
+          
         }
       }
+      this.recvPosts = {};
 
     }
 
@@ -108,6 +113,7 @@ class Main extends Component {
     componentDidMount() {
         const { dispatch, selectedSubreddit } = this.props
         dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        console.log("This is state did mount: "+this.state.menu);
     }
 
     componentDidUpdate(){
@@ -115,7 +121,9 @@ class Main extends Component {
       console.log('selected subreddit: '+selectedSubreddit);
       window.onpopstate  = (e) => {
         window.location.reload();
+        
       }
+      console.log("This is state update: "+this.state.menu);
     }
 
     handleMenuChange(subreddit,sort) {
@@ -131,8 +139,17 @@ class Main extends Component {
         dispatch(fetchPostsIfNeeded(selectedSubreddit))
     }
 
+    handleInputChange (term) {
+      const { dispatch } = this.props
+      this.setState({ term });
+      console.log("This is search: "+term)
+      this.props.dispatch(selectSubreddit('search'))
+      this.recvPosts = dispatch(searchPosts(term))
+      console.log("Results: "+JSON.stringify(this.recvPosts));
+  }
+
     render() {
-        const { selectedSubreddit, posts, isFetching } = this.props
+        const { selectedSubreddit, posts } = this.props
 
         return (
             <div>
@@ -161,9 +178,10 @@ class Main extends Component {
                 </Nav>
                 <Navbar.Form pullRight>
                   <FormGroup>
-                    <FormControl type="text" placeholder="Search Reddit..." />
-                  </FormGroup>{' '}
-                  <Button type="submit">Submit</Button>
+                    <Link to={"/search"}>
+                      <FormControl type="text" placeholder="Search Reddit..." value={this.state.term} onChange= {event => this.handleInputChange(event.target.value)}/>
+                    </Link>
+                  </FormGroup>
                 </Navbar.Form>
               </Navbar.Collapse>
             </Navbar>
@@ -196,6 +214,7 @@ class Main extends Component {
               <Route path='/technology/controversial' render={() => <Data posts={posts}/>}/>
               <Route path='/movies/controversial' render={() => <Data posts={posts}/>}/>
               <Route path='/gaming/controversial' render={() => <Data posts={posts}/>}/>
+              <Route path='/search' render={() => <Data posts={posts}/>}/>
             </div>
             </div>
         )

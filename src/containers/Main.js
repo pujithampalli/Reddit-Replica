@@ -38,7 +38,7 @@ class Main extends Component {
           menu: '/best',
           term: ''
         }
-        
+
 
         this.handleMenuChange = this.handleMenuChange.bind(this)
         this.handleRefreshClick = this.handleRefreshClick.bind(this)
@@ -49,7 +49,7 @@ class Main extends Component {
         if (window.performance) {
         if (performance.navigation.type == 1) {
           console.log("This is state: "+this.state.menu);
-          
+
         }
       }
       this.recvPosts = {};
@@ -121,7 +121,7 @@ class Main extends Component {
       console.log('selected subreddit: '+selectedSubreddit);
       window.onpopstate  = (e) => {
         window.location.reload();
-        
+
       }
       console.log("This is state update: "+this.state.menu);
     }
@@ -223,8 +223,13 @@ class Main extends Component {
 
 function mapStateToProps(state) {
   console.log("from mapstateprops"+ JSON.stringify(state));
-    const { selectedSubreddit, postsBySubreddit } = state
-    const { isFetching, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: [] }
+    const { selectedSubreddit, postsBySubreddit } = state;
+    if(selectedSubreddit == "search"){
+      var { isFetching, items: posts } = postsBySubreddit['undefined'] || { isFetching: true, items: [] }
+    }
+    else{
+      var { isFetching, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: [] }
+    }
 
     return {
         selectedSubreddit,

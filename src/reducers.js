@@ -76,6 +76,9 @@ const postsBySubreddit = (
         case INVALIDATE_SUBREDDIT:
         case RECEIVE_POSTS:
         case SEARCH_POSTS:
+        return { ...state,
+            [action.subreddit]: posts(state[action.subreddit], action)
+        }
         case REQUEST_POSTS:
             return { ...state,
                 [action.subreddit]: posts(state[action.subreddit], action)

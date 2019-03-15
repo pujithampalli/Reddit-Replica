@@ -46,6 +46,7 @@ class Main extends Component {
         this.handleSelect = this.handleSelect.bind(this)
         this.handleSort = this.handleSort.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleTheme = this.handleTheme.bind(this);
 
         if (window.performance) {
         if (performance.navigation.type == 1) {
@@ -115,6 +116,8 @@ class Main extends Component {
         const { dispatch } = this.props
         if((localStorage.getItem('subreddit')) && (localStorage.getItem('sort'))){
           var selectedSubreddit = localStorage.getItem('subreddit');
+          this.props.dispatch(selectSubreddit(selectedSubreddit))
+          this.props.dispatch(selectSort(sort))
           console.log("localStorage.getItem('subreddit')" + localStorage.getItem('subreddit')+""+localStorage.getItem('sort'))
           var sort = localStorage.getItem('sort');
           if(sort=="" && localStorage.getItem('sort')){
@@ -123,9 +126,17 @@ class Main extends Component {
         }
         else {
           var { selectedSubreddit } = this.props
+          var sort = ''
         }
+        this.props.dispatch(selectSubreddit(selectedSubreddit))
+        this.props.dispatch(selectSort(sort))
 
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        dispatch(fetchPostsIfNeeded(selectedSubreddit,sort))
+
+        window.addEventListener(
+          "beforeunload",
+          this.saveToLocalStorage.bind(this)
+        );
 
     }
 
@@ -141,6 +152,19 @@ class Main extends Component {
 
     componentWillUnmount(){
       const { dispatch, selectedSubreddit } = this.props
+      localStorage.setItem('subreddit', selectedSubreddit);
+      localStorage.setItem('sort', this.state.selectedSort);
+
+      window.removeEventListener(
+        "beforeunload",
+        this.saveToLocalStorage.bind(this)
+      );
+    }
+
+    saveToLocalStorage(){
+      const { selectedSubreddit } = this.props
+      localStorage.setItem('subreddit', selectedSubreddit);
+      localStorage.setItem('sort', this.state.selectedSort);
     }
 
     handleMenuChange(subreddit,sort) {
@@ -160,9 +184,37 @@ class Main extends Component {
     handleInputChange (term) {
       const { dispatch } = this.props
       this.setState({ term });
-      console.log("This is search: "+term)
-      this.props.dispatch(selectSubreddit('search'))
-      this.recvPosts = dispatch(searchPosts(term))
+      if(term != ""){
+        console.log("This is search: "+term)
+        this.props.dispatch(selectSubreddit('search'))
+        this.recvPosts = dispatch(searchPosts(term))
+      }
+      else{
+        console.log("This is search: "+term)
+        this.props.dispatch(selectSubreddit('best'))
+        this.recvPosts = dispatch(fetchPostsIfNeeded('best'))
+      }
+      
+  }
+  handleTheme(eventKey){
+    if(eventKey == 4.1){
+      //light
+      
+    }
+    else if(eventKey == 4.2){
+      //dark
+      document.getElementsByClassName("navbarleft")[0].style.backgroundColor = "black";
+      //document.getElementsByClassName("card-border")[0].style.backgroundColor = "dimgray";
+      var selects = document.getElementsByClassName("card-border");
+      console.log("selects.length: "+selects.length)
+      var i =0;
+      while(i<selects.length){
+        selects[i++].className = "card-border-dark";
+      }
+        // for(var i=0; i<selects.length; i++){
+        //   selects[i].className = " card-border-dark";
+        // }
+    }
   }
 
     render() {
@@ -187,10 +239,14 @@ class Main extends Component {
                     <MenuItem eventKey={2.4} onSelect={this.handleSelect}><Link to="/movies/best">Movies</Link></MenuItem>
                     <MenuItem eventKey={2.5} onSelect={this.handleSelect}><Link to="/gaming/best">Gaming</Link></MenuItem>
                   </NavDropdown>
-                  <NavDropdown eventKey={3} title="Sort By" id="basic-nav-dropdown">
+                  <NavDropdown eventKey={3} title="Sort By" id="basic-sort-dropdown">
                     <MenuItem eventKey={3.1} onSelect={this.handleSort}><Link to={this.state.menu+"/hot"}>Hot</Link></MenuItem>
                     <MenuItem eventKey={3.2} onSelect={this.handleSort}><Link to={this.state.menu+"/new"}>New</Link></MenuItem>
                     <MenuItem eventKey={3.3} onSelect={this.handleSort}><Link to={this.state.menu+"/controversial"}>Controversial</Link></MenuItem>
+                  </NavDropdown>
+                  <NavDropdown eventKey={4} title="Change Theme" id="basic-theme-dropdown">
+                    <MenuItem eventKey={4.1} onSelect={this.handleTheme}>Light Theme Mode</MenuItem>
+                    <MenuItem eventKey={4.2} onSelect={this.handleTheme}>Dark Theme Mode</MenuItem>
                   </NavDropdown>
                 </Nav>
                 <Navbar.Form pullRight>

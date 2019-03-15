@@ -12,6 +12,14 @@
   padding: 15px;
 }
 
+.card-border-dark {
+  border: 1px solid #848080;
+  border-radius: 5px;
+  margin-top: 5px;
+  background-color: dimgray;
+  padding: 15px;
+}
+
 .card-border:hover{
   background-color: #f5f5f5;
 }

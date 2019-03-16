@@ -1,4 +1,27 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a single page application built using react that lets you browse through reddit data, using reddit API's.<br>
+Live Demo: [Reddit Replica](https://reddit-replica.herokuapp.com/home).<br>
+
+## Features
+
+  ### Header
+  
+  * Has controls to select subreddits and change sort order settings. <br>
+  * Diaplays the name of the selected subbreddit. <br>
+  
+  ### Light and Dark Theme Modes
+  
+  * Dropdown on the header 'Change Theme' can be used to toggle between themes. <br>
+  * There are two different themes, one with light-background/dark-text and another one with dark-background/light-text. <br>
+  
+  ### Subreddit search autocomplete
+  
+  * For every letter a user types into the subreddit search input in the header, autocomplete results populate the subreddit list component. <br>
+  * Used reddit API - https://www.reddit.com/subreddits/search.json?q=POL <br>
+  
+  ### Saving state between page refreshes
+  
+  * If the page is refreshed it loads again with the same subreddit, sort order and theme settings. <br>
+  * Used local storage. <br>
 
 ## Available Scripts
 

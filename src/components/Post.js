@@ -19,7 +19,7 @@ export default class Post extends React.Component {
     const notImage = [ 'self', 'default' ]
     return (
       <div className="main-card" >
-          <div className="card-border" >
+          <div id="card-border" className="card-border" >
               <button className="open-modal" data-tip="Open Post" onClick={() => this.setState({ modalShow: true })}> <i className="fa fa-cog fa-spin"></i> </button><ReactTooltip />
               { !notImage.includes(thumbnail) && <Image floated='right' src={thumbnail} rounded bordered size="tiny" />}
               <div className="author">Posted by {author} in {subreddit_name_prefixed}</div>

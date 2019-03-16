@@ -16,8 +16,15 @@
   border: 1px solid #848080;
   border-radius: 5px;
   margin-top: 5px;
-  background-color: dimgray;
+  background-color: black;
+  color: white !important;
   padding: 15px;
+}
+.card-border-dark:hover {
+  background-color: dimgray;
+}
+.card-bobrder-dark > button{
+  background-color: #0d22b1;
 }
 
 .card-border:hover{

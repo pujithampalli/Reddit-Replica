@@ -27,7 +27,6 @@ import {
     searchPosts
 } from '../actions/actions'
 import Data from '../components/Data'
-import Header from '../components/Header'
 import Posts from '../containers/Posts'
 
 
@@ -37,23 +36,17 @@ class Main extends Component {
         this.state = {
           menu: '/best',
           term: '',
-          selectedSort: ''
+          selectedSort: '',
+          theme:'light'
         }
 
 
         this.handleMenuChange = this.handleMenuChange.bind(this)
-        this.handleRefreshClick = this.handleRefreshClick.bind(this)
         this.handleSelect = this.handleSelect.bind(this)
         this.handleSort = this.handleSort.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleTheme = this.handleTheme.bind(this);
 
-        if (window.performance) {
-        if (performance.navigation.type == 1) {
-          console.log("This is state: "+this.state.menu);
-
-        }
-      }
       this.recvPosts = {};
 
     }
@@ -118,25 +111,26 @@ class Main extends Component {
           var selectedSubreddit = localStorage.getItem('subreddit');
           this.props.dispatch(selectSubreddit(selectedSubreddit))
           this.props.dispatch(selectSort(sort))
-          console.log("localStorage.getItem('subreddit')" + localStorage.getItem('subreddit')+""+localStorage.getItem('sort'))
           var sort = localStorage.getItem('sort');
+          this.setState({selectedSort: sort});
           if(sort=="" && localStorage.getItem('sort')){
             sort = 'best'
+          }
+          if(localStorage.getItem('theme') && localStorage.getItem('theme')=='dark'){
+            this.handleTheme(4.2);
           }
         }
         else {
           var { selectedSubreddit } = this.props
           var sort = ''
+          if(localStorage.getItem('theme') && localStorage.getItem('theme')=='dark'){
+            this.handleTheme(4.2);
+          }
         }
         this.props.dispatch(selectSubreddit(selectedSubreddit))
         this.props.dispatch(selectSort(sort))
 
         dispatch(fetchPostsIfNeeded(selectedSubreddit,sort))
-
-        window.addEventListener(
-          "beforeunload",
-          this.saveToLocalStorage.bind(this)
-        );
 
     }
 
@@ -144,25 +138,14 @@ class Main extends Component {
       const { dispatch, selectedSubreddit } = this.props
       window.onpopstate  = (e) => {
         window.location.reload();
-
       }
       localStorage.setItem('subreddit', selectedSubreddit);
       localStorage.setItem('sort', this.state.selectedSort);
+      localStorage.setItem('theme', this.state.theme);
     }
 
     componentWillUnmount(){
       const { dispatch, selectedSubreddit } = this.props
-      localStorage.setItem('subreddit', selectedSubreddit);
-      localStorage.setItem('sort', this.state.selectedSort);
-
-      window.removeEventListener(
-        "beforeunload",
-        this.saveToLocalStorage.bind(this)
-      );
-    }
-
-    saveToLocalStorage(){
-      const { selectedSubreddit } = this.props
       localStorage.setItem('subreddit', selectedSubreddit);
       localStorage.setItem('sort', this.state.selectedSort);
     }
@@ -175,53 +158,42 @@ class Main extends Component {
         this.props.dispatch(fetchPostsIfNeeded(sub,sort))
     }
 
-    handleRefreshClick() {
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(invalidateSubreddit(selectedSubreddit))
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
-    }
-
     handleInputChange (term) {
       const { dispatch } = this.props
       this.setState({ term });
       if(term != ""){
-        console.log("This is search: "+term)
         this.props.dispatch(selectSubreddit('search'))
         this.recvPosts = dispatch(searchPosts(term))
       }
       else{
-        console.log("This is search: "+term)
         this.props.dispatch(selectSubreddit('best'))
         this.recvPosts = dispatch(fetchPostsIfNeeded('best'))
       }
-      
+
   }
   handleTheme(eventKey){
     if(eventKey == 4.1){
       //light
-      
+      var backg = document.getElementById("body-data");
+      backg.className = "body-data";
+      this.setState({theme: 'light'})
+
+
     }
     else if(eventKey == 4.2){
       //dark
-      document.getElementsByClassName("navbarleft")[0].style.backgroundColor = "black";
-      //document.getElementsByClassName("card-border")[0].style.backgroundColor = "dimgray";
-      var selects = document.getElementsByClassName("card-border");
-      console.log("selects.length: "+selects.length)
-      var i =0;
-      while(i<selects.length){
-        selects[i++].className = "card-border-dark";
-      }
-        // for(var i=0; i<selects.length; i++){
-        //   selects[i].className = " card-border-dark";
-        // }
+      var backg = document.getElementById("body-data");
+      backg.className = "body-data-dark";
+      this.setState({theme: 'dark'})
     }
+
   }
 
     render() {
         const { selectedSubreddit, posts } = this.props
 
         return (
-            <div>
+            <div id="body-data" className="body-data">
             <Navbar className="navbarleft">
               <Navbar.Header>
                 <Navbar.Brand pullLeft>

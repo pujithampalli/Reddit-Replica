@@ -17,7 +17,7 @@ export default class PostModal extends React.Component {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-      <div className="modal-padding">
+      <div id = "postModal" className="modal-padding">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             <span className="modal-author"> Posted by {author} in {subreddit}</span>

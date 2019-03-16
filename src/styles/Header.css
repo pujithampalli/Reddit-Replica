@@ -32,3 +32,51 @@
 .navbar-default .navbar-nav .nav-item>li>a{
   font-weight: "Bold";
 }
+
+.body-data-dark{
+  background-color: black;
+}
+.body-data-dark > nav{
+  background-color: #051371;
+  color: white;
+}
+.body-data-dark > nav >div > div > ul > li >a{
+  color: white !important;
+}
+
+.body-data-dark > nav >div > div > ul > li >a>a{
+  color: white !important;
+}
+
+.body-data-dark > div >div > div>div > div {
+  background-color: black;
+  color: white !important;
+  border: 1px solid #0d22b1;
+}
+.body-data-dark > div >div > div>div > div:hover {
+  background-color: #5b83cc;
+}
+.body-data-dark > div >div > div>div > div:hover >a{
+  color: white;
+}
+.body-data-dark > div >div > div>div > div > button{
+  background-color: #0d22b1;
+}
+.body-data-dark > nav >div > div >.navbar-nav>.open>a , .body-data-dark > nav >div > div >.navbar-nav>.open>a:hover , .body-data-dark > nav >div > div >.navbar-nav>.open>a:focus{
+    color: white;
+    background-color: #5b83cc;
+}
+.body-data-dark > nav >div > div >.navbar-nav>.open>.dropdown-menu{
+  color: white;
+  background-color: #5b83cc;
+}
+.body-data-dark > nav >div > div >.navbar-nav>.open>.dropdown-menu>li>a>a , .body-data-dark > nav >div > div >.navbar-nav>.open>.dropdown-menu>li>a{
+  color: white;
+}
+.body-data-dark > nav >div > div >.navbar-nav>.open>.dropdown-menu>li>a:hover{
+  background-color: black;
+}
+
+.body-data{
+  background-color: white;
+}

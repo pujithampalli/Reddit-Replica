@@ -17,7 +17,6 @@ import {
   DropdownItem } from 'react-bootstrap';
 import '../styles/Header.css';
 import { Link } from 'react-router-dom';
-import App from '../containers/App.js';
 import Posts from '../containers/Posts.js';
 import { Route, Redirect } from 'react-router-dom';
 

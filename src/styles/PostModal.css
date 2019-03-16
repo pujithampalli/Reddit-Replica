@@ -24,3 +24,7 @@
   text-overflow: ellipsis;
   margin-top: 10px;
 }
+.modal-dark{
+  background-color: #051371;
+  color:white;
+}

@@ -52,10 +52,11 @@ const recievePosts = (subreddit, sort, json) => (
     }
 )
 
-const recieveSearchPosts = (term, json) => (
+const recieveSearchPosts = (term, subreddit, json) => (
     {
         type: SEARCH_POSTS,
         term,
+        subreddit,
         posts: json.data.children.map(child => child.data),
         recievedAt: Date.now()
     }
@@ -85,9 +86,10 @@ const fetchPosts = (subreddit,sort) => {
               json => dispatch(recievePosts(subreddit, sort, json))
           )
         }
+        
 }
 
-export const searchPosts = (term) => {
+export const searchPosts = (term, subreddit) => {
     if(term==undefined || ""){
       var term = "pol";
     }
@@ -100,7 +102,7 @@ export const searchPosts = (term) => {
                 error => console.log('An error occured', error)
             )
             .then(
-                json => dispatch(recieveSearchPosts(term, json))
+                json => dispatch(recieveSearchPosts(term, subreddit, json))
             )
           }
   }

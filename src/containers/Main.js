@@ -78,7 +78,7 @@ class Main extends Component {
       }
     }
     handleSort(eventKey){
-      if(this.props.selectedSubreddit == 'best'||this.props.selectedSubreddit == 'hot'||this.props.selectedSubreddit == 'new'||this.props.selectedSubreddit == 'controversial'){
+      if(this.props.selectedSubreddit == 'best'||this.props.selectedSubreddit == 'hot'||this.props.selectedSubreddit == 'new'||this.props.selectedSubreddit == 'controversial' ||this.props.selectedSubreddit == 'search'){
         if(eventKey==3.1){
           this.setState({menu: ''});
           this.handleMenuChange('hot','');
@@ -107,7 +107,7 @@ class Main extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props
-        if((localStorage.getItem('subreddit')) && (localStorage.getItem('sort'))){
+        if((localStorage.getItem('subreddit')) &&(localStorage.getItem('subreddit')!=='search') && (localStorage.getItem('sort'))){
           var selectedSubreddit = localStorage.getItem('subreddit');
           this.props.dispatch(selectSubreddit(selectedSubreddit))
           this.props.dispatch(selectSort(sort))
@@ -163,7 +163,7 @@ class Main extends Component {
       this.setState({ term });
       if(term != ""){
         this.props.dispatch(selectSubreddit('search'))
-        this.recvPosts = dispatch(searchPosts(term))
+        this.recvPosts = dispatch(searchPosts(term, 'search'))
       }
       else{
         this.props.dispatch(selectSubreddit('best'))
@@ -244,6 +244,9 @@ class Main extends Component {
               <Route path='/technology/best' render={() => <Data posts={posts}/>}/>
               <Route path='/movies/best' render={() => <Data posts={posts}/>}/>
               <Route path='/gaming/best' render={() => <Data posts={posts}/>}/>
+              <Route path='/best/hot' render={() => <Data posts={posts}/>}/>
+              <Route path='/best/new' render={() => <Data posts={posts}/>}/>
+              <Route path='/best/controversial' render={() => <Data posts={posts}/>}/>
               <Route path='/worldnews/hot' render={() => <Data posts={posts}/>}/>
               <Route path='/politics/hot' render={() => <Data posts={posts}/>}/>
               <Route path='/technology/hot' render={() => <Data posts={posts}/>}/>
@@ -269,7 +272,7 @@ class Main extends Component {
 function mapStateToProps(state) {
     const { selectedSubreddit, postsBySubreddit } = state;
     if(selectedSubreddit == "search"){
-      var { isFetching, items: posts } = postsBySubreddit['undefined'] || { isFetching: true, items: [] }
+      var { isFetching, items: posts } = postsBySubreddit['search'] || { isFetching: true, items: [] }
     }
     else{
       var { isFetching, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: [] }

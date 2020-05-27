@@ -16,12 +16,12 @@ Live Demo: [Reddit Replica](https://reddit-replica.herokuapp.com/home).<br>
   ### Subreddit search autocomplete
   
   * For every letter a user types into the subreddit search input in the header, autocomplete results populate the subreddit list component. <br>
-  * Used reddit API - https://www.reddit.com/subreddits/search.json?q=POL <br>
+  * Used reddit API's for data. - https://www.reddit.com/subreddits/search.json?q=POL <br>
   
   ### Saving state between page refreshes
   
   * If the page is refreshed it loads again with the same subreddit, sort order and theme settings. <br>
-  * Used local storage. <br>
+  * Used local storage for saving state bbetween page refreshes. <br>
 
 ## Available Scripts
 
